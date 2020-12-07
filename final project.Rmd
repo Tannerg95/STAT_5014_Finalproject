@@ -1,0 +1,25 @@
+---
+title: "final project"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We will begin by downloading the data:
+
+```{r,eval=FALSE}
+timeseries <- read.csv("/cloud/project/timeseries (2).csv")
+america_data <-timeseries[239812:1048575,]
+
+saveRDS(america_data,"america_data.RDS")
+```
+
+
+
+
+```{r}
+america_data<-readRDS("america_data.RDS")
+
+```
