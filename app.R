@@ -1,104 +1,9 @@
 library(shiny)
 library(lubridate)
-
-ui <- fluidPage(
-  navbarPage(collapsible = TRUE,
-             "COVID-19 tracker", id="nav",inverse = TRUE,
-             
-             tabPanel("Region plots",
-           headerPanel('Covid-19 Dashboard'),
-           sidebarPanel(
-             selectInput("level_select", "Level:",   
-                choices = c("Global", "Country"), 
-                selected = c("Country"),
-                multiple = FALSE),
-             
-             selectInput("region_select", "Country/Region:",   
-                choices = c("Albania","Australia","Brazil","China","Cuba","Egypt","France","Iceland","Indonesia","Italy","Japan","US"),
-                selected = c("US"),
-                multiple = FALSE),
-             
-             selectInput("outcome_select", "Outcome:",   
-                choices = c("Confirmed", "Deaths", "Recovered"), 
-                selected = c("Confirmed"),
-                multiple = FALSE),
-             "Select outcome and regions to update region plots."
-             ),
-           mainPanel(
-             plotOutput('plot1')
-             )),
-           tabPanel("World Map",
-                    
-                    sliderInput("plot_date",
-                                label = h5("Select mapping date"),
-                                min = as.Date("2020-01-22","%Y-%m-%d"),
-                                max = as.Date(current_date,"%Y-%m-%d"),
-                                value = as.Date(current_date),width='100%'),
-                    timeFormat="%Y-%m-%d",
-                    
-                    mainPanel(plotOutput('map', width = "100%")))
-  )
-  
-)
-
-server <- function(input,output){
-    plottest <- reactive({
-      if (("Global" %in% input$level_select)&&("Confirmed" %in% input$outcome_select)) return(globalplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Albania" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Albaniaplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Australia" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Australiaplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Brazil" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Brazilplot.confirmed)
-      if (("Country" %in% input$level_select) &&("China" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Chinaplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Cuba" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Cubaplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Egypt" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Egyptplot.confirmed)
-      if (("Country" %in% input$level_select) &&("France" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Franceplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Iceland" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Icelandplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Indonesia" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Indonesiaplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Italy" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Italyplot.confirmed)
-      if (("Country" %in% input$level_select) &&("Japan" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Japanplot.confirmed)
-      if (("Country" %in% input$level_select) &&("US" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(USplot.confirmed)
-      
-      if (("Global" %in% input$level_select)&&("Recovered" %in% input$outcome_select)) return(globalplot.recovered)
-      if (("Country" %in% input$level_select) &&("Albania" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Albaniaplot.recovered)
-      if (("Country" %in% input$level_select) &&("Australia" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Australiaplot.recovered)
-      if (("Country" %in% input$level_select) &&("Brazil" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Brazilplot.recovered)
-      if (("Country" %in% input$level_select) &&("China" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Chinaplot.recovered)
-      if (("Country" %in% input$level_select) &&("Cuba" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Cubaplot.recovered)
-      if (("Country" %in% input$level_select) &&("Egypt" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Egyptplot.recovered)
-      if (("Country" %in% input$level_select) &&("France" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Franceplot.recovered)
-      if (("Country" %in% input$level_select) &&("Iceland" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Icelandplot.recovered)
-      if (("Country" %in% input$level_select) &&("Indonesia" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Indonesiaplot.recovered)
-      if (("Country" %in% input$level_select) &&("Italy" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Italyplot.recovered)
-      if (("Country" %in% input$level_select) &&("Japan" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Japanplot.recovered)
-      if (("Country" %in% input$level_select) &&("US" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(USplot.recovered)
-      
-      if (("Global" %in% input$level_select)&&("Deaths" %in% input$outcome_select)) return(globalplot.deaths)
-      if (("Country" %in% input$level_select) &&("Albania" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Albaniaplot.deaths)
-      if (("Country" %in% input$level_select) &&("Australia" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Australiaplot.deaths)
-      if (("Country" %in% input$level_select) &&("Brazil" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Brazilplot.deaths)
-      if (("Country" %in% input$level_select) &&("China" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Chinaplot.deaths)
-      if (("Country" %in% input$level_select) &&("Cuba" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Cubaplot.deaths)
-      if (("Country" %in% input$level_select) &&("Egypt" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Egyptplot.deaths)
-      if (("Country" %in% input$level_select) &&("France" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Franceplot.deaths)
-      if (("Country" %in% input$level_select) &&("Iceland" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Icelandplot.deaths)
-      if (("Country" %in% input$level_select) &&("Indonesia" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Indonesiaplot.deaths)
-      if (("Country" %in% input$level_select) &&("Italy" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Italyplot.deaths)
-      if (("Country" %in% input$level_select) &&("Japan" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Japanplot.deaths)
-      if (("Country" %in% input$level_select) &&("US" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(USplot.deaths)
-    })
-    
-    output$plot1 <- renderPlot({
-    par(mar=c(5.1,4.1,0,1))
-      dataplots <- plottest()
-      print(dataplots)
-    
-    })
-    
-    output$map <- renderPlot(map(date = paste('X',month(input$plot_date),".",day(input$plot_date),".","20",sep = "")))
-}
-
-
-
-
+library(tidyr)
+library(dplyr)
+library(rworldmap)
+library(ggplot2)
 
 ## Import data: Source from Johns Hopkins Github data
 confirmed_data <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
@@ -106,9 +11,6 @@ deaths_data <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-
 recovered_data <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")
 
 
-# Data cleaning: To create country level and global level data
-library(tidyr)
-library(dplyr)
 ## Country level
 confirmed <- confirmed_data %>% gather(key="date", value="confirmed", -c(Country.Region, Province.State, Lat, Long)) %>% group_by(Country.Region, date) %>% summarize(confirmed=sum(confirmed))
 
@@ -462,8 +364,7 @@ USplot.deaths <-ggplot(US, aes(x=date, y=deaths)) +
 latitude<-confirmed_data$Lat
 longitude<-confirmed_data$Long
 
-library(rworldmap)
-library(ggplot2)
+
 current_date_raw <- tail(colnames(confirmed_data),1)
 current_date <- paste("20",strsplit(sub(".","",current_date_raw),"\\.")[[1]][3],"-",strsplit(sub(".","",current_date_raw),"\\.")[[1]][1],"-",strsplit(sub(".","",current_date_raw),"\\.")[[1]][2],sep = "")
 
@@ -475,6 +376,105 @@ map<-function(date){
        asp = 1)
   points(longitude,latitude,type = "p",col="red",pch=21, bg=24, cex=confirmed_data[,which(colnames(confirmed_data)==date)]/5990000, lwd=.4,)
 }
+
+########### R shiny
+
+ui <- fluidPage(
+  navbarPage(collapsible = TRUE,
+             "COVID-19 tracker", id="nav",inverse = TRUE,
+             
+             tabPanel("Region plots",
+                      headerPanel('Covid-19 Dashboard'),
+                      sidebarPanel(
+                        selectInput("level_select", "Level:",   
+                                    choices = c("Global", "Country"), 
+                                    selected = c("Country"),
+                                    multiple = FALSE),
+                        
+                        selectInput("region_select", "Country/Region:",   
+                                    choices = c("Albania","Australia","Brazil","China","Cuba","Egypt","France","Iceland","Indonesia","Italy","Japan","US"),
+                                    selected = c("US"),
+                                    multiple = FALSE),
+                        
+                        selectInput("outcome_select", "Outcome:",   
+                                    choices = c("Confirmed", "Deaths", "Recovered"), 
+                                    selected = c("Confirmed"),
+                                    multiple = FALSE),
+                        "Select outcome and regions to update region plots."
+                      ),
+                      mainPanel(
+                        plotOutput('plot1')
+                      )),
+             tabPanel("World Map",
+                      
+                      sliderInput("plot_date",
+                                  label = h5("Select mapping date"),
+                                  min = as.Date("2020-01-22","%Y-%m-%d"),
+                                  max = as.Date(current_date,"%Y-%m-%d"),
+                                  value = as.Date(current_date),width='100%'),
+                      timeFormat="%Y-%m-%d",
+                      
+                      mainPanel(plotOutput('map', width = "100%")))
+  )
+  
+)
+
+server <- function(input,output){
+  plottest <- reactive({
+    if (("Global" %in% input$level_select)&&("Confirmed" %in% input$outcome_select)) return(globalplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Albania" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Albaniaplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Australia" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Australiaplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Brazil" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Brazilplot.confirmed)
+    if (("Country" %in% input$level_select) &&("China" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Chinaplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Cuba" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Cubaplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Egypt" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Egyptplot.confirmed)
+    if (("Country" %in% input$level_select) &&("France" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Franceplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Iceland" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Icelandplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Indonesia" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Indonesiaplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Italy" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Italyplot.confirmed)
+    if (("Country" %in% input$level_select) &&("Japan" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(Japanplot.confirmed)
+    if (("Country" %in% input$level_select) &&("US" %in% input$region_select)&&("Confirmed" %in% input$outcome_select)) return(USplot.confirmed)
+    
+    if (("Global" %in% input$level_select)&&("Recovered" %in% input$outcome_select)) return(globalplot.recovered)
+    if (("Country" %in% input$level_select) &&("Albania" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Albaniaplot.recovered)
+    if (("Country" %in% input$level_select) &&("Australia" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Australiaplot.recovered)
+    if (("Country" %in% input$level_select) &&("Brazil" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Brazilplot.recovered)
+    if (("Country" %in% input$level_select) &&("China" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Chinaplot.recovered)
+    if (("Country" %in% input$level_select) &&("Cuba" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Cubaplot.recovered)
+    if (("Country" %in% input$level_select) &&("Egypt" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Egyptplot.recovered)
+    if (("Country" %in% input$level_select) &&("France" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Franceplot.recovered)
+    if (("Country" %in% input$level_select) &&("Iceland" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Icelandplot.recovered)
+    if (("Country" %in% input$level_select) &&("Indonesia" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Indonesiaplot.recovered)
+    if (("Country" %in% input$level_select) &&("Italy" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Italyplot.recovered)
+    if (("Country" %in% input$level_select) &&("Japan" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(Japanplot.recovered)
+    if (("Country" %in% input$level_select) &&("US" %in% input$region_select)&&("Recovered" %in% input$outcome_select)) return(USplot.recovered)
+    
+    if (("Global" %in% input$level_select)&&("Deaths" %in% input$outcome_select)) return(globalplot.deaths)
+    if (("Country" %in% input$level_select) &&("Albania" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Albaniaplot.deaths)
+    if (("Country" %in% input$level_select) &&("Australia" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Australiaplot.deaths)
+    if (("Country" %in% input$level_select) &&("Brazil" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Brazilplot.deaths)
+    if (("Country" %in% input$level_select) &&("China" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Chinaplot.deaths)
+    if (("Country" %in% input$level_select) &&("Cuba" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Cubaplot.deaths)
+    if (("Country" %in% input$level_select) &&("Egypt" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Egyptplot.deaths)
+    if (("Country" %in% input$level_select) &&("France" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Franceplot.deaths)
+    if (("Country" %in% input$level_select) &&("Iceland" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Icelandplot.deaths)
+    if (("Country" %in% input$level_select) &&("Indonesia" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Indonesiaplot.deaths)
+    if (("Country" %in% input$level_select) &&("Italy" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Italyplot.deaths)
+    if (("Country" %in% input$level_select) &&("Japan" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(Japanplot.deaths)
+    if (("Country" %in% input$level_select) &&("US" %in% input$region_select)&&("Deaths" %in% input$outcome_select)) return(USplot.deaths)
+  })
+  
+  output$plot1 <- renderPlot({
+    par(mar=c(5.1,4.1,0,1))
+    dataplots <- plottest()
+    print(dataplots)
+    
+  })
+  
+  output$map <- renderPlot(map(date = paste('X',month(input$plot_date),".",day(input$plot_date),".","20",sep = "")))
+}
+
+
 
 
 
